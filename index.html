@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./style/resetStyle.css">
+  <link rel="stylesheet" href="./style/animation.css">
+  <link rel="stylesheet" href="./style/main.css">
+  <link rel="stylesheet" media="screen and (min-width: 320px) and (max-width: 767px)" href="./style/mobile.css">
+
+  <script src="/js/chooseColorPaint.js" defer></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="mainContainer">
+    <div class="titleMainContainer">Конфигуратор входной двери</div>
+
+    <div class="containerConfigurator">
+      <div class="contViewDoors">
+
+        <div class="text">
+          <div class="nalOutside">
+            <div class="contOutsideView">
+              <div class="outsideView">
+                <div class="handOutside"></div>
+              </div>
+            </div>
+          </div>
+          <div class="textOutsideView">вид снаружи</div>
+        </div>
+
+        <div class="text">
+          <div class="nalInside">
+            <div class="contInsideView">
+              <div class="insideView">
+                <div class="handInside"></div>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="textInsideView">вид изнутри</div>
+        </div>
+
+      </div>
+
+      <div class="containerParametrs">
+        <div class="titleParametrs">Параметры</div>
+
+        <div class="cntPaintingColor">
+          <div class="textPaintingColor">Цвет покраски</div>
+          <div class="choosePaintingColor">Выбор</div>
+        </div>
+
+        <div class="cntTextFilmColor">
+          <div class="textFilmColor">Цвет плёнки</div>
+          <div class="chooseFilmColor">Выбор</div>
+        </div>
+
+        <div class="cntHandColor">
+          <div class="textHandColor">Цвет ручки</div>
+          <div class="chooseHandColor">Выбор</div>
+        </div>
+
+        <div class="cntTextWidth">
+          <div class="textWidth">Ширина</div>
+          <div class="chooseWidth"></div>
+        </div>
+
+        <div class="cntTextHeight">
+          <div class="textHeight">Высота</div>
+          <div class="chooseHeight"></div>
+        </div>
+
+        <div class="cntTextOpening">
+          <div class="textOpening">Открывание</div>
+          <div class="chooseOpening">
+            <select id="chooseOpening">
+              <option>Выбор</option>
+              <option>Правое</option>
+              <option>Левое</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="cntTextAccessories">
+          <div class="textAccessories">Акссесуары</div>
+          <div class="chooseAccessories">Выбор</div>
+        </div>
+
+        <div class="totalPrice">
+          <div class="textPrice">Итого:</div>
+          <div class="price">0.00</div>
+        </div>
+
+        <div class="sendEquipment">
+          <button>Отправить комплектацию</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	text-decoration: none;
+}
+
+body {
+	scroll-behavior: smooth;
+	text-rendering: optimizeSpeed;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    font-family: arial;
+}
+
+
+img {
+	display: block;
+	max-width: 100%;
+}
+
+h1,
+h2,
+p,
+a,
+button {
+	color: #000;
+    font-family: noah;
+}
+
+button:hover{
+    cursor: pointer;
+}

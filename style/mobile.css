@@ -1,0 +1,18 @@
+.mainContainer{
+    width: inherit;
+    margin-bottom: 76px;
+}
+
+.contViewDoors{
+    display: flex;
+    flex-direction: column;
+}
+
+.containerConfigurator{
+    display: flex;
+    flex-direction: column;
+}
+
+.containerParametrs{
+    width: inherit;
+}
