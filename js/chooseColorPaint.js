@@ -12,14 +12,15 @@ const zena = {
         'red': ['240'],
         'blue': ['201'],
         'yellow': ['512'],
-        'green': ['128']
+        'green': ['128'],
     },
 
     'chooseFilmColor': {
         'red': ['200'],
-        'blue': ['271'],
-        'yellow': ['312'],
-        'green': ['178']
+        'blue': ['271.13'],
+        'yellow': ['312.01'],
+        'green': ['178.2'],
+        
     },
     'colorHand': {
         'red': ['131'],
@@ -167,6 +168,8 @@ function totalBuy() {
      if (readyMadeEquipment.paintingColor.color) {
         document.querySelector('div.nalOutside').style.background = 
             readyMadeEquipment.paintingColor.color;
+        document.querySelector('div.nalInside').style.background = 
+            readyMadeEquipment.paintingColor.color;
      }
 
      if (readyMadeEquipment.filmColor.color) {
@@ -199,8 +202,69 @@ setInterval(function(){
            summa += Number(readyMadeEquipment.accesories.price[i]);
     }
 
-    document.querySelector('div.price').innerHTML = summa;
-}, 1000)
+    document.querySelector('div.price').textContent = 
+                 summa.toLocaleString('ru-RU', {style: 'currency', currency: 'RUB'});
+
+    miniatureChoose();
+    
+}, 500)
+
+function miniatureChoose(){
+    
+    const minPaint = document.querySelector('div.minPaint');
+    const minFilmColor = document.querySelector('div.minFilmColor');
+    const minHandColor = document.querySelector('div.minHandColor');
+    const widthValueDoors = document.querySelector('div.valueWidth');
+    const heightValueDoors = document.querySelector('div.valueHeight');
+    const valueOpening = document.querySelector('div.valueOpening');
+    const valueAccessories = document.querySelector('div.valueAccessories');
+
+    
+    if (readyMadeEquipment.paintingColor.color.length == 0) {
+        document.querySelector('div.nalInside').style.background = '#b3b3b3';
+        document.querySelector('div.nalOutside').style.background = '#b3b3b3';
+        minPaint.style.background = '#b3b3b3';
+    } else 
+    {
+        minPaint.style.background =
+        readyMadeEquipment.paintingColor.color;
+    }
+
+    if (readyMadeEquipment.filmColor.color.length == 0) {
+        minFilmColor.style.background = '#b3b3b3';
+    } else {
+        minFilmColor.style.background = 
+        readyMadeEquipment.filmColor.color;
+    }
+
+    if (readyMadeEquipment.handColor.color.length == 0) {
+        minHandColor.style.background = '#b3b3b3';
+    } else {
+        minHandColor.style.background = 
+        readyMadeEquipment.handColor.color;
+    }
+
+    if (readyMadeEquipment.widthDoor.width.length) 
+          widthValueDoors.textContent = readyMadeEquipment.widthDoor.width;
+
+    if (readyMadeEquipment.heightDoor.height.length) 
+          heightValueDoors.textContent = readyMadeEquipment.heightDoor.height;
+
+    if (readyMadeEquipment.opening.type.length) 
+          valueOpening.textContent   = readyMadeEquipment.opening.type;
+
+    if (readyMadeEquipment.opening.type.length) 
+          valueOpening.textContent   = readyMadeEquipment.opening.type;
+    
+    if (readyMadeEquipment.accesories.article.length) {
+        if (valueAccessories.textContent.length > 0) {
+            valueAccessories.textContent = readyMadeEquipment.accesories.article.join(',');
+        }
+
+            
+    }
+
+}
 
 function accessories(zena) {
     const cntFormPaintDoor = document.querySelector('div.cntFormPaintDoor');
@@ -301,6 +365,7 @@ function eventSelectWidthHeightDoors() {
 
 function colorPaintDoor(zena, typePaint) {
     document.body.style.overflow = 'hidden';
+  
     const cntFormPaintDoor = document.querySelector('div.cntFormPaintDoor');
     const cntColorPaintDoor = document.createElement('div');
 
@@ -321,6 +386,7 @@ function colorPaintDoor(zena, typePaint) {
         }
 
         if (typePaint === '2') {
+            
             const zenaPaint = Object.values(zena.chooseFilmColor)[i];
             colorBox.dataset.zenaPaint = zenaPaint;
         }
@@ -344,6 +410,10 @@ function addEventArticle() {
     const btnOk = document.querySelector('div.cntBtnArticle button');
 
     btnOk.onclick = () => {
+        
+        readyMadeEquipment.accesories.article.length = 0;
+        readyMadeEquipment.accesories.price.length = 0;
+        
     for (let i = 0; i < article.length; i++) {
         if (article[i].checked == true ) {
               
@@ -387,6 +457,7 @@ function addReadyMade(data, type, nameCompl) {
     }
 
     if (type == 'handColor') {
+        
         if (!readyMadeEquipment.handColor.color) {
             readyMadeEquipment.handColor.color = nameCompl;
             readyMadeEquipment.handColor.zena = data;

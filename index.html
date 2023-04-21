@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="./style/main.css">
   <link rel="stylesheet" media="screen and (min-width: 320px) and (max-width: 767px)" href="./style/mobile.css">
 
-  <script src="/js/chooseColorPaint.js" defer></script>
+  <script src="./js/chooseColorPaint.js" defer></script>
   <title>Document</title>
 </head>
 
@@ -51,32 +51,54 @@
         <div class="titleParametrs">Параметры</div>
 
         <div class="cntPaintingColor">
-          <div class="textPaintingColor">Цвет покраски</div>
+          
+            <div class="cntTextPaint">
+            <div class="textPaintingColor">Цвет покраски</div>
+            <div class="minPaint"></div>
+          </div>
+
           <div class="choosePaintingColor">Выбор</div>
         </div>
 
         <div class="cntTextFilmColor">
-          <div class="textFilmColor">Цвет плёнки</div>
+            <div class="cntTextPaint">
+                <div class="cntFilmColor">
+            <div class="textFilmColor">Цвет плёнки</div>
+            <div class="minFilmColor"></div>
+                </div>
+            </div>
           <div class="chooseFilmColor">Выбор</div>
         </div>
 
         <div class="cntHandColor">
+            <div class="cntTextHandColor">
           <div class="textHandColor">Цвет ручки</div>
+          <div class="minHandColor"></div>
+            </div>
           <div class="chooseHandColor">Выбор</div>
         </div>
 
         <div class="cntTextWidth">
+        <div class="cntTextNameWidth">
           <div class="textWidth">Ширина</div>
+          <div class="valueWidth">не выбрано</div>
+        </div>
           <div class="chooseWidth"></div>
         </div>
 
         <div class="cntTextHeight">
+        <div class="cntTextNameHeight">
           <div class="textHeight">Высота</div>
+          <div class="valueHeight">не выбрано</div>
+        </div>
           <div class="chooseHeight"></div>
         </div>
 
         <div class="cntTextOpening">
-          <div class="textOpening">Открывание</div>
+          <div class="cntTextName">
+            <div class="textOpening">Открывание</div>
+            <div class="valueOpening">не выбрано</div>
+        </div>
           <div class="chooseOpening">
             <select id="chooseOpening">
               <option>Выбор</option>
@@ -87,11 +109,15 @@
         </div>
 
         <div class="cntTextAccessories">
+        <div class="cntNameAccesories">
           <div class="textAccessories">Акссесуары</div>
+          <div class="valueAccessories">не выбраны</div>
+        </div>
+
           <div class="chooseAccessories">Выбор</div>
         </div>
 
-        <div class="totalPrice">
+        <div class="totalPrice weightPrice">
           <div class="textPrice">Итого:</div>
           <div class="price">0.00</div>
         </div>
