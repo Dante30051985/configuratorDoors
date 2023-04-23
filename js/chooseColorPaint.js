@@ -1,3 +1,6 @@
+`use strict`
+import * as func from './libary.js'
+
 const choosePaint = document.querySelector('div.choosePaintingColor');
 const chooseFilmColor = document.querySelector('div.chooseFilmColor');
 const chooseHandColor = document.querySelector('div.chooseHandColor');
@@ -117,8 +120,9 @@ chooseOpening.onchange = (e) => {
             insideView.setAttribute('style', 'transform: scale(1,1); background:'+
             readyMadeEquipment.filmColor.color+';');
         }
-
-        addReadyMade(zena.opening.leftOpen[0], type = 'opening', nameOpen = 'Левое');
+        const type = 'opening';
+        const nameOpen = 'Левое';
+        addReadyMade(zena.opening.leftOpen[0], type, nameOpen);
 
     }
 
@@ -134,33 +138,42 @@ chooseOpening.onchange = (e) => {
             readyMadeEquipment.filmColor.color+';');
         }
 
-        addReadyMade(zena.opening.rightOpen[0], type = 'opening', nameOpen = 'Правое');
+        const type = 'opening';
+        const nameOpen = 'Правое';
+        addReadyMade(zena.opening.rightOpen[0], type , nameOpen);
 
     }
 }
 
 chooseAccessories.onclick = () => {
-    createWindow(title = 'Выбор акссесуаров');
+    const title = 'Выбор акссесуаров';
+    func.createWindow(title);
     accessories(zena);
     addEventArticle();
 }
 
 chooseHandColor.onclick = () => {
-    createWindow(title = 'Выбор цвета ручки');
-    colorPaintDoor(zena, type = '3');
-    addEventWindow(type = '3');
+    const title = 'Выбор цвета ручки';
+    const type = '3';
+    func.createWindow(title);
+    colorPaintDoor(zena, type);
+    addEventWindow(type);
 }
 
 chooseFilmColor.onclick = () => {
-    createWindow(title = 'Выбор цвета плёнки');
-    colorPaintDoor(zena, type = '2');
-    addEventWindow(type = '2');
+    const title = 'Выбор цвета плёнки';
+    const type = '2';
+    func.createWindow(title);
+    colorPaintDoor(zena, type);
+    addEventWindow(type);
 }
 
 choosePaint.onclick = () => {
-    createWindow(title = 'Выбор цвета покраски');
-    colorPaintDoor(zena, type = '1');
-    addEventWindow(type = '1');
+    const title = 'Выбор цвета покраски';
+    const type = '1';
+    func.createWindow(title);
+    colorPaintDoor(zena, type);
+    addEventWindow(type);
 
 }
 
@@ -342,13 +355,14 @@ function selectWidthHeight(zena) {
 function eventSelectWidthHeightDoors() {
     const selWidthHeight = document.querySelectorAll('select');
 
-    selWidthHeight[0].onchange = (e) => {
+    selWidthHeight[0].onchange = () => {
         const selIndx = selWidthHeight[0].options[selWidthHeight[0].selectedIndex];
 
         const widthDoor = selIndx.value;
         const zenaDoor = selIndx.dataset.zenaWidth;
+        const type = 'widthDoor';
 
-        addReadyMade(widthDoor, type = 'widthDoor', zenaDoor);
+        addReadyMade(widthDoor, type, zenaDoor);
     }
 
     selWidthHeight[1].onchange = (e) => {
@@ -356,8 +370,8 @@ function eventSelectWidthHeightDoors() {
 
         const heightDoor = selIndx.value;
         const zenaDoor = selIndx.dataset.zenaHeight;
-
-        addReadyMade(heightDoor, type = 'heightDoor', zenaDoor);
+        const type = 'heightDoor';
+        addReadyMade(heightDoor, type, zenaDoor);
     }
 
 
@@ -531,29 +545,3 @@ function addEventWindow(type) {
     }
 }
 
-function createWindow(title) {
-    const cover = document.createElement('div');
-    const pageY = window.pageYOffset;
-    
-    cover.classList.add('cover');
-    cover.style.top = pageY+'px';
-    
-    document.body.append(cover);
-
-    const cntFormPaintDoor = document.createElement('div');
-    cntFormPaintDoor.classList.add('cntFormPaintDoor');
-    cover.append(cntFormPaintDoor);
-
-    const cntTitleChoosePaintDoor = document.createElement('div');
-    cntTitleChoosePaintDoor.classList.add('cntTitleChoosePaintDoor');
-    cntFormPaintDoor.append(cntTitleChoosePaintDoor);
-
-    const titleChoose = document.createElement('div');
-    titleChoose.classList.add('formTitleChoose');
-    titleChoose.textContent = title;
-    cntTitleChoosePaintDoor.append(titleChoose);
-
-    const closeChoose = document.createElement('div');
-    closeChoose.classList.add('closeChoose');
-    titleChoose.append(closeChoose);
-}
