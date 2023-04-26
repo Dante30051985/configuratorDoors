@@ -3,6 +3,7 @@
 $host = 'localhost';
 $user = 'root';
 $passw = 'Vowa1955!!!';
+$port = '3314';
 
 $tableUsers = 'users';
 $tablePainting = 'paintdoors';
@@ -27,8 +28,32 @@ $resultCheckedDb = $db->query($sql);
 
 if ($resultCheckedDb->num_rows > 0) {
     
-    $conn = connectionBase($host, $user, $passw, $database);
     
+  $sql = "SHOW TABLES";
+  $resultCheckedTable = $db->query($sql);
+
+  if ($resultCheckedTable == false) {
+    createBase($db, $database);
+    $link = connectionBase($host, $user, $passw, $database);
+    createTable($link,
+                  $tableUsers,
+                  $tablePainting,
+                  $tableFilmColor,
+                  $tableHandColor,
+                  $tableWidthDoors,
+                  $tableHeightDoors,
+                  $tableOpeningDoors,
+                  $tableAcsessories,
+                  $tableZakaz
+              );    
+   $conn = connectionBase($host, $user, $passw, $database);
+  } else {
+   $conn = connectionBase($host, $user, $passw, $database);
+  }
+     
+
+
+
 } else {
         createBase($db, $database);
       $link = connectionBase($host, $user, $passw, $database);

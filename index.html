@@ -9,13 +9,18 @@
   <link rel="stylesheet" href="./style/animation.css">
   <link rel="stylesheet" href="./style/main.css">
   <link rel="stylesheet" media="screen and (min-width: 320px) and (max-width: 767px)" href="./style/mobile.css">
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
 
   <script type="module" src="./js/chooseColorPaint.js" defer></script>
   <script type="module" src="./js/service.js" defer></script>
+  <script src="./js/jsPDF.js" async></script>
+  <script src="./js/jspdfdebug.js" async></script>
+
   <title>Document</title>
 </head>
 
 <body>
+  
   <div class="mainContainer">
     <div class="titleMainContainer">
         <div class="cntText">Конфигуратор входной двери</div>
@@ -104,11 +109,6 @@
             <div class="valueOpening">не выбрано</div>
         </div>
           <div class="chooseOpening">
-            <select id="chooseOpening">
-              <option>Выбор</option>
-              <option>Правое</option>
-              <option>Левое</option>
-            </select>
           </div>
         </div>
 
@@ -128,11 +128,50 @@
 
         <div class="sendEquipment">
           <button>Отправить комплектацию</button>
+          
         </div>
       </div>
 
     </div>
+
+    <div id="customers">
+      <table id="tab_customers" class="table">
+            <thead>
+                <tr class='warning'>
+                    <th>№ заказа</th>
+                    <th>Цвет покраски</th>
+                    <th>Цвет плёнки</th>
+                    <th>Цвет ручки</th>
+                    <th>Ширина</th>
+                    <th>Высота</th>
+                    <th>Тип открывания</th>
+                    <th>Аксессуары</th>
+                    <th>Итого</th>
+                  
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                
+                    <td id="order"></td>
+                    <td id="paintdoor"></td>
+                    <td id="filmcolor"></td>
+                    <td id="colorhand"></td>
+                    <td id="widthdoor"></td>
+                    <td id="heightdoor"></td>
+                    <td id="typeopening"></td>
+                    <td id="accessories"></td>
+                    <td id="amount"></td>
+                
+                  </tr>
+            </tbody>
+        </table>
+    </div>
+
   </div>
+
+
+
 
 </body>
 
