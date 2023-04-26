@@ -1,3 +1,5 @@
+import * as param from './libary2.js';
+
 export function createWindow(title, paramBtn) {
     const cover = document.createElement('div');
     const pageY = window.pageYOffset;
@@ -211,6 +213,26 @@ export function createWindow(title, paramBtn) {
         windowUser('heightDoors', 'zena', 'Укажите высоту двери', 'Укажите цену', 'Добавить в прайс',
             'Удалить из прайса');
 
+            queryInDb('heightDoors');
+
+            const btnInsertColor = document.querySelector('button.btnAddUser');
+    
+            btnInsertColor.onclick = () => {
+                const widthDoor = document.querySelector('input[name=heightDoors]').value;
+                const zena = document.querySelector('input[name=zena]').value;
+    
+                const queryDb = 'heightDoors=' + encodeURIComponent(widthDoor) + '&zena=' + encodeURIComponent(zena);
+                fetch('./php/querydb.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+                    },
+                    body: queryDb
+                }).then(response => response.text()).then(result =>
+                    queryInDb(result)
+                )
+            }
+
         const closeChoose = document.querySelector('div.closeChoose');
         closeChoose.classList.remove('closeChoose');
         closeChoose.classList.add('closeParam');
@@ -225,6 +247,27 @@ export function createWindow(title, paramBtn) {
     if (paramBtn === '6') {
         windowUser('typeOpening', 'zena', 'Укажите тип открывания двери', 'Укажите цену', 'Добавить в прайс',
             'Удалить из прайса');
+
+            queryInDb('openDoors');
+
+            const btnInsertColor = document.querySelector('button.btnAddUser');
+    
+            btnInsertColor.onclick = () => {
+                const openDoor = document.querySelector('input[name=typeOpening]').value;
+                const zena = document.querySelector('input[name=zena]').value;
+    
+                const queryDb = 'openDoors=' + encodeURIComponent(openDoor) + '&zena=' + encodeURIComponent(zena);
+                fetch('./php/querydb.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+                    },
+                    body: queryDb
+                }).then(response => response.text()).then(result =>
+                    queryInDb(result)
+                )
+            }
+
 
         const closeChoose = document.querySelector('div.closeChoose');
         closeChoose.classList.remove('closeChoose');
@@ -241,6 +284,27 @@ export function createWindow(title, paramBtn) {
         windowUser('accessories', 'zena', 'Укажите акссесуары', 'Укажите цену', 'Добавить в прайс',
             'Удалить из прайса');
 
+            queryInDb('accessories');
+
+            const btnInsertColor = document.querySelector('button.btnAddUser');
+    
+            btnInsertColor.onclick = () => {
+                const accessories = document.querySelector('input[name=accessories]').value;
+                const zena = document.querySelector('input[name=zena]').value;
+    
+                const queryDb = 'accessories=' + encodeURIComponent(accessories) + 
+                                                '&zena=' + encodeURIComponent(zena);
+                fetch('./php/querydb.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+                    },
+                    body: queryDb
+                }).then(response => response.text()).then(result =>
+                    queryInDb(result)
+                )
+            }
+
         const closeChoose = document.querySelector('div.closeChoose');
         closeChoose.classList.remove('closeChoose');
         closeChoose.classList.add('closeParam');
@@ -255,6 +319,8 @@ export function createWindow(title, paramBtn) {
     if (paramBtn === '8') {
         windowUser();
 
+        /* TODO withdrawal of completed orders */
+        
         const closeChoose = document.querySelector('div.closeChoose');
         closeChoose.classList.remove('closeChoose');
         closeChoose.classList.add('closeParam');
@@ -275,7 +341,7 @@ export function createWindowParametr() {
     const titleWindow = 'Параметры конфигуртора';
     document.querySelector('div.cover').remove();
     createWindow(titleWindow);
-
+    
     const cntFormParametrs = document.querySelector('div.cntFormPaintDoor');
     const closeServiceAuth = document.querySelector('div.closeChoose');
 
@@ -306,253 +372,193 @@ export function createWindowParametr() {
     }
 }
 
-function queryInDb(typeQuery) {
 
-    const queryDb = 'typeQuery=' + encodeURIComponent(typeQuery);
-    fetch('./php/querydb.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-        },
-        body: queryDb
-    }).then(response => response.text()).then(result =>
-        printResulDb(result)
-    )
-}
 
 function printResulDb(result) {
-    
-    console.log(result);
-
     if (result === '1') {
-        document.querySelector('select.listUser').remove();
         const cntList = document.querySelector('div.cntListUser');
-        cntList.style.padding = '65px';
+        const lisUser = document.querySelectorAll('ul.listUser li');
+
+        for (let i = 0; i < lisUser.length; i++) {
+            lisUser[i].remove();
+        }
+
         const labelNoRecord = document.createElement('label');
         labelNoRecord.textContent = 'Нет никаких записей';
         cntList.append(labelNoRecord);
-    } else {
+    }
+     else 
+    {
+           
+        console.log(result);
 
         const parse = JSON.parse(result);
-        const listUser = document.querySelector('select.listUser');
-
+      
         let typeParse = Object.keys(parse);
 
         if (typeParse[0] === 'login') {
-            const optionUser = document.querySelectorAll('select.listUser option');
+            
+            let user = [];
 
-            if (optionUser.length > 0) {
-                for (let i = 0; i < optionUser.length; i++) {
-                    optionUser[i].remove();
-                }
-            }
-
-
-            for (let i = 0; i < parse['login'].length; i++) {
-                const optionSelect = document.createElement('option');
-                optionSelect.value = parse['passw'][i];
-                optionSelect.dataset.user = parse['login'][i];
-                optionSelect.textContent = parse['login'][i];
-                listUser.append(optionSelect);
-            }
-
-            listUser.onchange = () => {
-                const selIndx = listUser.options[listUser.selectedIndex];
-                const user = selIndx.dataset.user;
-
+                param.viewUserAfterinsertDb(parse);
+            
                 const btnDel = document.querySelector('button.btnDelUser');
+                const checkbox = document.querySelectorAll('input[type=checkbox]');     
 
-                btnDel.onclick = () => {
-                    const queryDb = 'delUser=' + encodeURIComponent(user);
-                    fetch('./php/querydb.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-                        },
-                        body: queryDb
-                    }).then(response => response.text()).then(result =>
-                        queryInDb('users')
-                    )
+                for (let i = 0; i < checkbox.length; i++) {
+                    checkbox[i].onchange = () => {
+                    if (checkbox[i].checked) user.push(checkbox[i].value);
+                    }
                 }
 
+              btnDel.onclick = () => {
+                    delUser(user);
+                }
             }
-        }
+        
 
         if (typeParse[0] === 'colorDoors') {
-            const optionUser = document.querySelectorAll('select.listUser option');
 
-            if (optionUser.length > 0) {
-                for (let i = 0; i < optionUser.length; i++) {
-                    optionUser[i].remove();
+            let color = [];
+
+            param.viewUserAfterinsertDb(parse);
+        
+            const btnDel = document.querySelector('button.btnDelUser');
+            const checkbox = document.querySelectorAll('input[type=checkbox]');     
+
+            for (let i = 0; i < checkbox.length; i++) {
+                checkbox[i].onchange = () => {
+                if (checkbox[i].checked) color.push(checkbox[i].value);
                 }
             }
 
-
-            for (let i = 0; i < parse['colorDoors'].length; i++) {
-                const optionSelect = document.createElement('option');
-                optionSelect.value = parse['zena'][i];
-                optionSelect.dataset.user = parse['colorDoors'][i];
-                optionSelect.innerHTML = parse['colorDoors'][i] +
-                    '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp' + parse['zena'][i] + 'руб.';
-                listUser.append(optionSelect);
-            }
-
-            listUser.onchange = () => {
-                const selIndx = listUser.options[listUser.selectedIndex];
-                const color = selIndx.dataset.user;
-
-                document.querySelector('input#colorPainting').value = color;
-                const btnDel = document.querySelectorAll('button')[2];
-
-
-
-
-                btnDel.onclick = () => {
-                    const queryDb = 'delColor=' + encodeURIComponent(color);
-                    fetch('./php/querydb.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-                        },
-                        body: queryDb
-                    }).then(response => response.text()).then(result =>
-                        queryInDb('paintingColor')
-                    )
-                }
-
+          btnDel.onclick = () => {
+                delColor(color);
             }
         }
 
         if (typeParse[0] === 'colorFilm') {
-            console.log(parse);
-            const optionUser = document.querySelectorAll('select.listUser option');
 
-            if (optionUser.length > 0) {
-                for (let i = 0; i < optionUser.length; i++) {
-                    optionUser[i].remove();
+            let colorFilm = [];
+           
+            param.viewUserAfterinsertDb(parse);
+        
+            const btnDel = document.querySelector('button.btnDelUser');
+            const checkbox = document.querySelectorAll('input[type=checkbox]');     
+
+            for (let i = 0; i < checkbox.length; i++) {
+                checkbox[i].onchange = () => {
+                if (checkbox[i].checked) colorFilm.push(checkbox[i].value);
                 }
             }
 
-
-            for (let i = 0; i < parse['colorFilm'].length; i++) {
-                const optionSelect = document.createElement('option');
-                optionSelect.value = parse['zena'][i];
-                optionSelect.dataset.user = parse['colorFilm'][i];
-                optionSelect.innerHTML = parse['colorFilm'][i] +
-                    '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp' + parse['zena'][i] + 'руб.';
-                listUser.append(optionSelect);
-            }
-
-            listUser.onchange = () => {
-                const selIndx = listUser.options[listUser.selectedIndex];
-                const color = selIndx.dataset.user;
-
-                document.querySelector('input#colorPainting').value = color;
-                const btnDel = document.querySelectorAll('button')[2];
-
-
-                btnDel.onclick = () => {
-                    const queryDb = 'delColorFilm=' + encodeURIComponent(color);
-                    fetch('./php/querydb.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-                        },
-                        body: queryDb
-                    }).then(response => response.text()).then(result =>
-                        queryInDb('filmColor')
-                    )
-                }
-
+          btnDel.onclick = () => {
+                delColorFilm(colorFilm);
             }
         }
 
         if (typeParse[0] === 'colorHand') {
-            console.log(parse);
-            const optionUser = document.querySelectorAll('select.listUser option');
+         
+            let colorHand = [];
+           
+            param.viewUserAfterinsertDb(parse);
+        
+            const btnDel = document.querySelector('button.btnDelUser');
+            const checkbox = document.querySelectorAll('input[type=checkbox]');     
 
-            if (optionUser.length > 0) {
-                for (let i = 0; i < optionUser.length; i++) {
-                    optionUser[i].remove();
+            for (let i = 0; i < checkbox.length; i++) {
+                checkbox[i].onchange = () => {
+                if (checkbox[i].checked) colorHand.push(checkbox[i].value);
                 }
             }
 
-
-            for (let i = 0; i < parse['colorHand'].length; i++) {
-                const optionSelect = document.createElement('option');
-                optionSelect.value = parse['zena'][i];
-                optionSelect.dataset.user = parse['colorHand'][i];
-                optionSelect.innerHTML = parse['colorHand'][i] +
-                    '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp' + parse['zena'][i] + 'руб.';
-                listUser.append(optionSelect);
-            }
-
-            listUser.onchange = () => {
-                const selIndx = listUser.options[listUser.selectedIndex];
-                const color = selIndx.dataset.user;
-
-                document.querySelector('input#colorPainting').value = color;
-                const btnDel = document.querySelectorAll('button')[2];
-
-
-                btnDel.onclick = () => {
-                    const queryDb = 'delColorHand=' + encodeURIComponent(color);
-                    fetch('./php/querydb.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-                        },
-                        body: queryDb
-                    }).then(response => response.text()).then(result =>
-                        queryInDb('handColor')
-                    )
-                }
-
+          btnDel.onclick = () => {
+                delColorHand(colorHand);
             }
         }
         
         if (typeParse[0] === 'widthDoors') {
-            console.log(parse);
-            const optionUser = document.querySelectorAll('select.listUser option');
 
-            if (optionUser.length > 0) {
-                for (let i = 0; i < optionUser.length; i++) {
-                    optionUser[i].remove();
+            let widthDoors = [];
+           
+            param.viewUserAfterinsertDb(parse);
+        
+            const btnDel = document.querySelector('button.btnDelUser');
+            const checkbox = document.querySelectorAll('input[type=checkbox]');     
+
+            for (let i = 0; i < checkbox.length; i++) {
+                checkbox[i].onchange = () => {
+                if (checkbox[i].checked) widthDoors.push(checkbox[i].value);
                 }
             }
 
-
-            for (let i = 0; i < parse['widthDoors'].length; i++) {
-                const optionSelect = document.createElement('option');
-                optionSelect.value = parse['zena'][i];
-                optionSelect.dataset.user = parse['widthDoors'][i];
-                optionSelect.innerHTML = parse['widthDoors'][i] +
-                    '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp' + parse['zena'][i] + 'руб.';
-                listUser.append(optionSelect);
-            }
-
-            listUser.onchange = () => {
-                const selIndx = listUser.options[listUser.selectedIndex];
-                const widthDoor = selIndx.dataset.user;
-
-                const btnDel = document.querySelectorAll('button')[2];
-
-
-                btnDel.onclick = () => {
-                    const queryDb = 'delWidthDoors=' + encodeURIComponent(widthDoor);
-                    fetch('./php/querydb.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-                        },
-                        body: queryDb
-                    }).then(response => response.text()).then(result =>
-                        queryInDb('widthDoors')
-                    )
-                }
-
+          btnDel.onclick = () => {
+                delWidthDoors(widthDoors);
             }
         }
+     
+
+        if (typeParse[0] === 'heightDoors') {
+
+            let heightDoors = [];
+           
+            param.viewUserAfterinsertDb(parse);
+        
+            const btnDel = document.querySelector('button.btnDelUser');
+            const checkbox = document.querySelectorAll('input[type=checkbox]');     
+
+            for (let i = 0; i < checkbox.length; i++) {
+                checkbox[i].onchange = () => {
+                if (checkbox[i].checked) heightDoors.push(checkbox[i].value);
+                }
+            }
+
+          btnDel.onclick = () => {
+                delHeight(heightDoors);
+            }
+        }
+
+        if (typeParse[0] === 'openDoors') {
+
+            let openDoor = [];
+           
+            param.viewUserAfterinsertDb(parse);
+        
+            const btnDel = document.querySelector('button.btnDelUser');
+            const checkbox = document.querySelectorAll('input[type=checkbox]');     
+
+            for (let i = 0; i < checkbox.length; i++) {
+                checkbox[i].onchange = () => {
+                if (checkbox[i].checked) openDoor.push(checkbox[i].value);
+                }
+            }
+
+          btnDel.onclick = () => {
+                delOpen(openDoor);
+            }
+        }
+
+     
+        if (typeParse[0] === 'accessories') {
+
+            let accessories = [];
+           
+            param.viewUserAfterinsertDb(parse);
+        
+            const btnDel = document.querySelector('button.btnDelUser');
+            const checkbox = document.querySelectorAll('input[type=checkbox]');     
+
+            for (let i = 0; i < checkbox.length; i++) {
+                checkbox[i].onchange = () => {
+                if (checkbox[i].checked) accessories.push(checkbox[i].value);
+                }
+            }
+
+          btnDel.onclick = () => {
+                delAccessories(accessories);
+            }
+        }
+
     }
 
 }
@@ -592,16 +598,40 @@ function windowUser(arg1, arg2, arg3, arg4, arg5, arg6) {
             }
 
         } else {
+       
+            if (arg1 === 'login' || arg1 === 'typeOpening' || arg1 === 'accessories') {
             const inputLogin = document.createElement('input')
             inputLogin.placeholder = arg3;
             inputLogin.name = arg1;
             inputLogin.type = 'text';
             cntInput.append(inputLogin);
+            } else {
+
+                /* TODO  */
+             
+
+                const inputLogin = document.createElement('input')
+                inputLogin.placeholder = arg3;
+                inputLogin.name = arg1;
+                inputLogin.type = 'number';
+                inputLogin.inputMode = 'numeric';
+                inputLogin.pattern = '^\d+(,\d{3})*(\.\d{2})?$';
+
+                cntInput.append(inputLogin);
+                
+            }
         }
 
+         
         const inputPassw = document.createElement('input')
         inputPassw.placeholder = arg4;
-        inputPassw.type = 'text';
+        
+        if (arg2 == 'zena') {
+            inputPassw.type = 'number';
+            inputPassw.inputMode = 'numeric';
+            inputPassw.pattern = '^\d+(,\d{3})*(\.\d{2})?$';
+        }
+
         inputPassw.name = arg2;
         cntInput.append(inputPassw);
 
@@ -624,8 +654,127 @@ function windowUser(arg1, arg2, arg3, arg4, arg5, arg6) {
     cntListUser.classList.add('cntListUser');
     cntFormPaintDoor.append(cntListUser);
 
-    const listUser = document.createElement('select');
-    listUser.classList.add('listUser');
-    listUser.setAttribute('multiple', 'multiple');
-    cntListUser.append(listUser);
 }
+
+/* Функция вывода данных из таблиц в диалоговое окно справочника */////////////////////////////////
+
+function queryInDb(typeQuery) {
+
+    const queryDb = 'typeQuery=' + encodeURIComponent(typeQuery);
+    fetch('./php/querydb.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body: queryDb
+    }).then(response => response.text()).then(result =>
+        printResulDb(result)
+    )
+}
+
+/* Функции удаления данных из таблиц *///////////////////////////////////////////////////////////
+
+function delUser(user) {
+    const queryDb = 'delUser=' + encodeURIComponent(user);
+    fetch('./php/querydb.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body: queryDb
+    }).then(response => response.text()).then(result =>
+        queryInDb('users')
+   )
+}
+
+function delColor(color) {
+    const queryDb = 'delColor=' + encodeURIComponent(color);
+    fetch('./php/querydb.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body: queryDb
+    }).then(response => response.text()).then(result =>
+        queryInDb('paintingColor')
+   )
+}
+
+function delColorFilm(colorFilm) {
+    const queryDb = 'delColorFilm=' + encodeURIComponent(colorFilm);
+    fetch('./php/querydb.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body: queryDb
+    }).then(response => response.text()).then(result =>
+        queryInDb('filmColor')
+   )
+}
+
+function delColorHand(colorHand) {
+    const queryDb = 'delColorHand=' + encodeURIComponent(colorHand);
+    fetch('./php/querydb.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body: queryDb
+    }).then(response => response.text()).then(result =>
+        queryInDb('handColor')
+   )
+}
+
+function delWidthDoors(widthDoors) {
+    const queryDb = 'delWidthDoors=' + encodeURIComponent(widthDoors);
+    fetch('./php/querydb.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body: queryDb
+    }).then(response => response.text()).then(result =>
+        queryInDb('widthDoors')
+   )
+}
+
+function delHeight(heightDoors) {
+    const queryDb = 'delHeightDoors=' + encodeURIComponent(heightDoors);
+    fetch('./php/querydb.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body: queryDb
+    }).then(response => response.text()).then(result =>
+        queryInDb('heightDoors')
+   )
+}
+
+function  delOpen(openDoor) {
+    const queryDb = 'delOpen=' + encodeURIComponent(openDoor);
+    fetch('./php/querydb.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body: queryDb
+    }).then(response => response.text()).then(result =>
+        queryInDb('openDoors')
+   )
+}
+
+function delAccessories(accessories) {
+    const queryDb = 'delAccessories=' + encodeURIComponent(accessories);
+    fetch('./php/querydb.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        body: queryDb
+    }).then(response => response.text()).then(result =>
+        queryInDb('accessories')
+   )
+}
+

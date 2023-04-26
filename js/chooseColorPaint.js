@@ -1,64 +1,24 @@
 `use strict`
 import * as func from './libary.js'
+import * as queryDb from './query/queryDb.js';
+import * as generation from './generation/createImage.js';
 
 const choosePaint = document.querySelector('div.choosePaintingColor');
 const chooseFilmColor = document.querySelector('div.chooseFilmColor');
 const chooseHandColor = document.querySelector('div.chooseHandColor');
-
-const chooseWidth = document.querySelector('div.chooseWidth');
-const chooseHeight = document.querySelector('div.chooseHeight');
-
 const chooseAccessories = document.querySelector('div.chooseAccessories');
 
-const zena = {
-    'paintingColor': {
-        'red': ['240'],
-        'blue': ['201'],
-        'yellow': ['512'],
-        'green': ['128'],
-    },
 
-    'chooseFilmColor': {
-        'red': ['200'],
-        'blue': ['271.13'],
-        'yellow': ['312.01'],
-        'green': ['178.2'],
-        
-    },
-    'colorHand': {
-        'red': ['131'],
-        'blue': ['311'],
-        'yellow': ['211'],
-        'green': ['300']
-    },
-    'sizeWidth': {
-        '870 мм': ['1200'],
-        '880 мм': ['1112'],
-        '890 мм': ['1411'],
-        '900 мм': ['1911'],
-        '910 мм': ['1320'],
-        '920 мм': ['1021']
-    },
-    'sizeHeight': {
-        '2040 мм': ['1410'],
-        '2050 мм': ['1010'],
-        '2060 мм': ['1511'],
-        '2070 мм': ['1211'],
-        '2080 мм': ['1711'],
-        '2090 мм': ['1911']
-    },
-    'opening': {
-        'leftOpen': ['921'],
-        'rightOpen': ['843']
-    },
-    'accesosires': {
-        'A1': ['411'],
-        'A2': ['512'],
-        'A3': ['721'],
-        'A4': ['910']
-    }
+const order = document.querySelector('td#order');
+const paintdoor = document.querySelector('td#paintdoor');
+const filmcolor = document.querySelector('td#filmcolor');
+const colorhand = document.querySelector('td#colorhand');
+const widthdoor = document.querySelector('td#widthdoor');
+const heightdoor = document.querySelector('td#heightdoor');
+const typeopening = document.querySelector('td#typeopening');
+const accessories = document.querySelector('td#accessories');
+const amount = document.querySelector('td#amount');
 
-};
 
 let readyMadeEquipment = {
     'opening': {
@@ -95,24 +55,57 @@ let readyMadeEquipment = {
 };
 
 
+const btnSendCompletation = document.querySelector('div.sendEquipment');
 
-console.log(readyMadeEquipment);
+btnSendCompletation.onclick = () => {
 
-const chooseOpening = document.querySelector('select#chooseOpening');
+   generation.createImageConfig(readyMadeEquipment);
+ 
+
+
+}
 
 
 window.onload = () => {
-    selectWidthHeight(zena);
+  queryDb.queryDbGuide('paramDoors');
+  
 }
 
+setTimeout(function(){
+    const chooseWidth = document.querySelector('select.selWidth');
+    const chooseHeight = document.querySelector('select.selHeight');
+
+    chooseWidth.onchange = () => {
+        const selIndx = chooseWidth.options[chooseWidth.selectedIndex];
+
+        const widthDoor = selIndx.value;
+        const zenaDoor = selIndx.dataset.zena;
+        const type = 'widthDoor';
+
+        addReadyMade(widthDoor, type, zenaDoor);
+    }
+
+     chooseHeight.onchange = (e) => {
+        const selIndx = chooseHeight.options[chooseHeight.selectedIndex];
+
+        const heightDoor = selIndx.value;
+        const zenaDoor = selIndx.dataset.zena;
+        const type = 'heightDoor';
+        addReadyMade(heightDoor, type, zenaDoor);
+    }
+
+const chooseOpening = document.querySelector('div.chooseOpening select')
+
 chooseOpening.onchange = (e) => {
+
     const selectedOption = chooseOpening.options[chooseOpening.selectedIndex];
     const value = selectedOption.value;
 
-    if (value === 'Левое') {
+    if (value === 'левое') {
         const insideView = document.querySelector('div.insideView');
         const outsideView = document.querySelector('div.outsideView');
 
+  
         insideView.setAttribute('style', 'transform: scale(1,1);');
         outsideView.setAttribute('style', 'transform: scale(-1, 1);');
 
@@ -121,12 +114,11 @@ chooseOpening.onchange = (e) => {
             readyMadeEquipment.filmColor.color+';');
         }
         const type = 'opening';
-        const nameOpen = 'Левое';
-        addReadyMade(zena.opening.leftOpen[0], type, nameOpen);
+        addReadyMade(selectedOption.dataset.zena, type, value);
 
     }
 
-    if (value === 'Правое') {
+    if (value === 'правое') {
         const insideView = document.querySelector('div.insideView');
         const outsideView = document.querySelector('div.outsideView');
 
@@ -139,42 +131,56 @@ chooseOpening.onchange = (e) => {
         }
 
         const type = 'opening';
-        const nameOpen = 'Правое';
-        addReadyMade(zena.opening.rightOpen[0], type , nameOpen);
+        const nameOpen = 'правое';
+        addReadyMade(selectedOption.dataset.zena, type, value);
 
     }
 }
 
+}, 2000);
+
 chooseAccessories.onclick = () => {
     const title = 'Выбор акссесуаров';
+    const type = '4';
     func.createWindow(title);
-    accessories(zena);
-    addEventArticle();
+    queryDb.queryDbGuide(type);
+    setTimeout(function(){
+        addEventArticle();
+    }, 1000)
 }
 
 chooseHandColor.onclick = () => {
     const title = 'Выбор цвета ручки';
     const type = '3';
     func.createWindow(title);
-    colorPaintDoor(zena, type);
-    addEventWindow(type);
+    queryDb.queryDbGuide(type);
+    
+    setTimeout(function(){
+        addEventWindow(type);
+    }, 1000)
 }
 
 chooseFilmColor.onclick = () => {
     const title = 'Выбор цвета плёнки';
     const type = '2';
     func.createWindow(title);
-    colorPaintDoor(zena, type);
-    addEventWindow(type);
+    queryDb.queryDbGuide(type);
+    
+    setTimeout(function(){
+        addEventWindow(type);
+    }, 1000)
 }
 
 choosePaint.onclick = () => {
     const title = 'Выбор цвета покраски';
     const type = '1';
     func.createWindow(title);
-    colorPaintDoor(zena, type);
-    addEventWindow(type);
-
+    queryDb.queryDbGuide(type);
+  
+    setTimeout(function(){
+        addEventWindow(type);
+    }, 1000)
+    
 }
 
 function totalBuy() {
@@ -220,6 +226,19 @@ setInterval(function(){
 
     miniatureChoose();
     
+     //  order = Math.random(10,100);
+        paintdoor.textContent = readyMadeEquipment.paintingColor.color;
+        filmcolor.innerHTML = readyMadeEquipment.filmColor.color;
+        colorhand.innerHTML = readyMadeEquipment.handColor.color; 
+        widthdoor.innerHTML = readyMadeEquipment.widthDoor.width;
+        heightdoor.innerHTML = readyMadeEquipment.heightDoor.height;
+        typeopening.innerHTML = readyMadeEquipment.opening.type;
+        accessories.innerHTML = readyMadeEquipment.accesories.article; 
+        amount.innerHTML = document.querySelector('div.price').textContent;
+
+
+
+
 }, 500)
 
 function miniatureChoose(){
@@ -279,145 +298,12 @@ function miniatureChoose(){
 
 }
 
-function accessories(zena) {
-    const cntFormPaintDoor = document.querySelector('div.cntFormPaintDoor');
-
-    const cntCheckbox = document.createElement('div');
-
-    cntCheckbox.classList.add('cntCheckbox');
-    cntFormPaintDoor.append(cntCheckbox);
 
 
-    for (let i = 0; i < Object.keys(zena.accesosires).length; i++) {
 
 
-        const cntArticule = document.createElement('div');
-        cntArticule.classList.add('articule');
-        cntCheckbox.append(cntArticule);
-
-        const photoArticule = document.createElement('div');
-        photoArticule.classList.add('photoArticule');
-
-        photoArticule.style.width = '50px';
-        photoArticule.style.height = '50px';
-        photoArticule.style.background = 'orange';
-        photoArticule.textContent = Object.keys(zena.accesosires)[i];
-        cntArticule.append(photoArticule);
-
-        const checkbox = document.createElement('input');
-        checkbox.classList.add('checkedAccesories');
-        checkbox.dataset.zenaArticule = Object.values(zena.accesosires)[i];
-        checkbox.dataset.articule = Object.keys(zena.accesosires)[i];
-        checkbox.type = 'checkbox';
-        cntArticule.append(checkbox);
-    }
-
-    const cntBtnConfirmArticule = document.createElement('div');
-    cntBtnConfirmArticule.classList.add('cntBtnArticle');
-    cntFormPaintDoor.append(cntBtnConfirmArticule);
-
-    const btnConfirm = document.createElement('button');
-    btnConfirm.textContent = 'ОК';
-    cntBtnConfirmArticule.append(btnConfirm);
-}
-
-function selectWidthHeight(zena) {
-    const chooseWidth = document.querySelector('div.chooseWidth');
-    const chooseHeight = document.querySelector('div.chooseHeight');
-    
-    const menuWidthDoors = document.createElement('select');
-    const menuHeightDoors = document.createElement('select');
-
-    chooseWidth.append(menuWidthDoors);
-    chooseHeight.append(menuHeightDoors);
-
-    const elMenuWidth = document.querySelector('div.chooseWidth select');
-    const elMenuHeight = document.querySelector('div.chooseHeight select');
 
 
-    for (let i = 0; i < Object.keys(zena.sizeWidth).length; i++) {
-        const optionWidth = document.createElement('option');
-        optionWidth.textContent = Object.keys(zena.sizeWidth)[i];
-        optionWidth.dataset.zenaWidth = Object.values(zena.sizeWidth)[i];
-
-        elMenuWidth.append(optionWidth);
-    }
-
-    for (let i = 0; i < Object.keys(zena.sizeHeight).length; i++) {
-        const optionHeight = document.createElement('option');
-        optionHeight.textContent = Object.keys(zena.sizeHeight)[i];
-        optionHeight.dataset.zenaHeight = Object.values(zena.sizeHeight)[i];
-        elMenuHeight.append(optionHeight);
-    }
-    eventSelectWidthHeightDoors();
-}
-
-function eventSelectWidthHeightDoors() {
-    const selWidthHeight = document.querySelectorAll('select');
-
-    selWidthHeight[0].onchange = () => {
-        const selIndx = selWidthHeight[0].options[selWidthHeight[0].selectedIndex];
-
-        const widthDoor = selIndx.value;
-        const zenaDoor = selIndx.dataset.zenaWidth;
-        const type = 'widthDoor';
-
-        addReadyMade(widthDoor, type, zenaDoor);
-    }
-
-    selWidthHeight[1].onchange = (e) => {
-        const selIndx = selWidthHeight[1].options[selWidthHeight[1].selectedIndex];
-
-        const heightDoor = selIndx.value;
-        const zenaDoor = selIndx.dataset.zenaHeight;
-        const type = 'heightDoor';
-        addReadyMade(heightDoor, type, zenaDoor);
-    }
-
-
-}
-
-function colorPaintDoor(zena, typePaint) {
-    document.body.style.overflow = 'hidden';
-  
-    const cntFormPaintDoor = document.querySelector('div.cntFormPaintDoor');
-    const cntColorPaintDoor = document.createElement('div');
-
-    cntColorPaintDoor.classList.add('cntColorPaintDoor');
-    cntFormPaintDoor.append(cntColorPaintDoor);
-
-
-    for (let i = 0; i < Object.keys(zena.paintingColor).length; i++) {
-        const colorBox = document.createElement('div');
-        const color = Object.keys(zena.paintingColor)[i];
-
-        colorBox.classList.add('colorBox');
-        colorBox.setAttribute('data-color', color);
-
-        if (typePaint === '1') {
-            const zenaPaint = Object.values(zena.paintingColor)[i];
-            colorBox.dataset.zenaPaint = zenaPaint;
-        }
-
-        if (typePaint === '2') {
-            
-            const zenaPaint = Object.values(zena.chooseFilmColor)[i];
-            colorBox.dataset.zenaPaint = zenaPaint;
-        }
-
-        if (typePaint === '3') {
-            const zenaPaint = Object.values(zena.colorHand)[i];
-            colorBox.dataset.zenaPaint = zenaPaint;
-        }
-
-        colorBox.style.width = '30px';
-        colorBox.style.height = '30px';
-        colorBox.style.background = Object.keys(zena.paintingColor)[i];
-
-        cntColorPaintDoor.append(colorBox);
-    }
-
-}
 
 function addEventArticle() {
     const article = document.querySelectorAll('input.checkedAccesories');
@@ -432,7 +318,7 @@ function addEventArticle() {
         if (article[i].checked == true ) {
               
             readyMadeEquipment.accesories.article.push(article[i].dataset.articule);   
-            readyMadeEquipment.accesories.price.push(article[i].dataset.zenaArticule);   
+            readyMadeEquipment.accesories.price.push(article[i].dataset.zena);   
 
             }
         }
@@ -495,13 +381,16 @@ function addReadyMade(data, type, nameCompl) {
 
     if (type == 'paintingColor') {
         if (!readyMadeEquipment.paintingColor.color) {
+            console.log(nameCompl);
+            console.log(data);
             readyMadeEquipment.paintingColor.color = nameCompl;
             readyMadeEquipment.paintingColor.zena = data;
 
         } else {
             readyMadeEquipment.paintingColor.color = nameCompl;
             readyMadeEquipment.paintingColor.zena = data;
-
+            console.log(nameCompl);
+            console.log(data);
         }
     }
 
@@ -518,15 +407,15 @@ function addReadyMade(data, type, nameCompl) {
 }
 
 function addEventWindow(type) {
+
     const closeWindow = document.querySelector('div.closeChoose');
     const chooseColor = document.querySelectorAll('div.colorBox');
-
 
     for (let i = 0; i < chooseColor.length; i++) {
 
         chooseColor[i].onclick = (e) => {
             const colorDoor = e.target.dataset.color;
-            const zenaColorDoor = e.target.dataset.zenaPaint;
+            const zenaColorDoor = e.target.dataset.zena;
 
             if (type == '1') addReadyMade(zenaColorDoor, type = 'paintingColor', colorDoor);
             if (type == '2') addReadyMade(zenaColorDoor, type = 'filmColor', colorDoor);
